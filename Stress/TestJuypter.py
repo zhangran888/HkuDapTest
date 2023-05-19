@@ -158,7 +158,7 @@ async def taskmain():
     total_time = 0
     start_time = time.time()
     print(f"开始时间统计到: {start_time:.2f} s")
-    # 创建500个并发任务
+    # 创建500任务
     for i in range(1):
         task = asyncio.create_task(open_lab())
         tasks.append(task)

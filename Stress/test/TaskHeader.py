@@ -33,7 +33,7 @@ executor = concurrent.futures.ThreadPoolExecutor()
 # 登录并定义字典，存储不同用户的jwtToken数据
 def login():
     # 从 txt 文件中读取用户名和密码
-    with open(r'D:\PycharmProjects\HkuDapTest\user_info.txt', 'r') as f:
+    with open(r'D:\PycharmProjects\HkuDapTest\user.txt', 'r') as f:
         tasks = []
         for line in f:
             tasks.append(executor.submit(loginUser, line))

@@ -11,7 +11,7 @@ import random
 # 压测地址
 API_ENDPOINT = "http://120.26.166.101/api/client/lab/subscription/add"
 # jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODM3OTMwNTQsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI5ZjNiYWJkYS1kNjllLTQ2MTgtOWVhNi0wZjJmNTdmZWVjNzQifQ.T4FZgUG1xlPArfAtyMs-9ngBwYam5x3B7bKEy3mhkPg"
-jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODQ0MDEyNzgsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI4MDU2NzFhNi0zMjg4LTRhYWItOTMwYS02NjFlOWZlMmZjNDkifQ.8hwxXUGg86_zlMEnWn63jscNX7jfjBsLTK9J08Y5VpU"
+jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODQ4OTM1OTUsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiJkYWU1ZjYxYy1lZjUzLTQwN2MtYjMxYS1jZGQ2NjE1NzUxZmEifQ.1p97rObyX4-SmugjxVccr8bSktnuvRXAN8xQv6HVQoE"
 headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
 
 TOTAL_ORDERS = 50
@@ -24,7 +24,7 @@ labPriceId = "1659122501932912642"
 for i in range(TOTAL_ORDERS):
     # 构造通用的订单信息
     order_info = {
-        "accessType": "Group of students",
+        "accessType": "Individual Student",
         "currency": "USD",
         "delegates": {
             "firstName": "",

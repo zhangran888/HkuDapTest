@@ -1,10 +1,4 @@
 # author: zhangran
-# createTime: 2023/5/18 20:01:46
-# describe:
-# author: zhangran
-# createTime: 2023/5/18 8:54:46
-# describe:
-# author: zhangran
 # createTime: 2023/5/11 17:07:56
 # describe: 登录500个用户并获取对应的jwtToken数据，查询500个用户对应的订单，并打开
 
@@ -334,7 +328,7 @@ def taskCloseLab():
 
 
 if __name__ == '__main__':
-    asyncio.run(taskOpenJuypter())
+    # asyncio.run(taskOpenJuypter())
     # time.sleep(5000)
-    # taskCloseLab()
+    taskCloseLab()
     # print()

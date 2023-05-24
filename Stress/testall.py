@@ -5,6 +5,8 @@ import asyncio
 import time
 from asyncio import as_completed
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 
@@ -131,4 +133,6 @@ if __name__ == '__main__':
     # openUrl()
     # asyncio.run(main())
     # taskThread()
-    hello()
+    # hello()
+
+    print("开始时间统计到:" + str(datetime.now()))

@@ -1,6 +1,6 @@
 # author: zhangran
 # createTime: 2023/5/11 17:07:56
-# describe: 登录500个用户并获取对应的jwtToken数据，查询500个用户对应的订单，并打开
+# describe: 主要用于打开容器操作
 
 import asyncio
 import json
@@ -28,7 +28,7 @@ container_url_dict = {}
 # 登录并定义字典，存储不同用户的jwtToken数据
 def login():
     # 从 txt 文件中读取用户名和密码
-    with open(r'D:\PycharmProjects\HkuDapTest\user_info.txt', 'r') as f:
+    with open(r'D:\PycharmProjects\HkuDapTest\user.txt', 'r') as f:
         for line in f:
             username, password = line.strip().split(':')
             # 构造登录请求的参数

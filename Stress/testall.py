@@ -128,11 +128,31 @@ def tsf():
         print(f"student{i + 1}")
 
 
+def atestSign():
+    try:
+        import base64
+        import hmac
+        from hashlib import sha256
+        # 密钥key
+        SecretKeySpec = "5921ba25ad974899bf8f2b48ef1cb77c"
+        # 密钥ID
+        SecretIdSpec = "9936520aaa4745caa59c7cf61aeb4511"
+        sign = base64.b64encode(
+            hmac.new(SecretKeySpec.encode("utf-8"), SecretIdSpec.encode("utf-8"), digestmod=sha256).digest()).decode()
+        print(sign)
+    except Exception as e:
+        print(e)
+
+
 if __name__ == '__main__':
     # tsf()
     # openUrl()
     # asyncio.run(main())
     # taskThread()
     # hello()
-
-    print("开始时间统计到:" + str(datetime.now()))
+    # starttime = time.time()
+    # time.sleep(10)
+    # time = time.time()
+    # ss = time-starttime
+    # print(f"开始时间统计到:{ss:.2f} " )
+    atestSign()

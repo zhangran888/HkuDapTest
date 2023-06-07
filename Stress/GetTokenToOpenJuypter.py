@@ -385,10 +385,10 @@ async def send_messages(websocket):
 
             response = await websocket.recv()
             print(f"Received response: {response}")
-            # time.sleep(1)
-        except websockets.exceptions.ConnectionClosedError as e:
+            await asyncio.sleep(5)  # 等待5秒后重新连接
+        except websockets.ConnectionClosedError as e:
             print(f"Connection closed unexpectedly: {e.reason}")
-            await asyncio.sleep(1)  # 等待5秒后重新连接
+            await asyncio.sleep(5)  # 等待5秒后重新连接
             continue
 
 
@@ -397,6 +397,7 @@ async def awebsocket(uri):
         try:
             async with websockets.connect(uri) as websocket:
                 await send_messages(websocket)
+                await asyncio.sleep(5)  # 等待5秒后发送
         except Exception as e:
             print(f"Unexpected error occurred: {e}")
             await asyncio.sleep(5)  # 等待5秒后重新连接
@@ -404,8 +405,8 @@ async def awebsocket(uri):
 
 
 async def websoketmain():
-    uri = "ws://47.96.2.99/api/client/webSocket/1656935608784883713/eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHVkZW50MUBleGFtcGxlLmNvbSIsImlhdCI6MTY4NDEzNDA3NywiYWNjb3VudCI6InN0dWRlbnQxQGV4YW1wbGUuY29tIiwianRpIjoiNjkwMWJhYjMtY2ZhMi00YmNiLWIxOTUtOTk5ZjAwNzFkYTYzIn0.y3wcL7uY9o5sNTmk0F3WQsQjH02Wmuu8fMxPDfbBTDw/null"
-    tasks = [asyncio.create_task(awebsocket(uri)) for _ in range(600)]
+    uri = "ws://120.26.166.101/api/client/webSocket/1662346690114945026/eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHVkZW50MUBleGFtcGxlLmNvbSIsImlhdCI6MTY4NTE4MzI3MCwiYWNjb3VudCI6InN0dWRlbnQxQGV4YW1wbGUuY29tIiwianRpIjoiOTIxM2Y5MWQtNmVhNS00YjRiLThiMzQtMTNmODhiOGY0YjgzIn0.4aReDQQLAdVcLle_2K112BkL1OpXMzZOJyAfXuCfz_E/null"
+    tasks = [asyncio.create_task(awebsocket(uri)) for _ in range(1500)]
     await asyncio.gather(*tasks)
 
 
@@ -416,7 +417,6 @@ if __name__ == '__main__':
     # asyncio.run(taskOpenJuypter())
 
     # 运行测试WebSocket连接
-    # asyncio.run(websoketmain())
+    asyncio.run(websoketmain())
 
     # asyncio.run(taskCloseLab())
-    print()

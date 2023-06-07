@@ -6,14 +6,9 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
-from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 import asyncio
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 
 executor = concurrent.futures.ThreadPoolExecutor()
 
@@ -29,9 +24,6 @@ def get_all_users():
 
 # open打开juypter容器地址
 async def openContainerUrl_Header(user, headless):
-    MAX_RETRY_COUNT = 1800  # 最大重试次数
-    retry_count = 0  # 当前重试次数
-
     # 这里是异步任务的具体实现
     chromepath = r"D:\\chromedriver_32_113\\chromedriver.exe"
     options = Options()
@@ -59,10 +51,6 @@ async def openContainerUrl_Header(user, headless):
             break
         except Exception as e:
             print("#############################【" + username + "登录元素失败】######################")
-            retry_count += 1
-            if retry_count > MAX_RETRY_COUNT:
-                print("【" + username + "登录超时，超过重试次数】")
-                return 500
             driver.refresh()
     openTime = time.time()
     while True:
@@ -101,11 +89,7 @@ async def openContainerUrl_Header(user, headless):
                 "标题" + driver.title + "初始地址" + open_url + "裁剪后地址" + new_url + "用户-->" + username + "到juypter时间--->" + f"时间统计：共花费 {openduration:.2f} 秒")
             break
         except Exception as e:
-            print("#############################【" + username + "--->open元素失败】######################")
-            retry_count += 1
-            if retry_count > MAX_RETRY_COUNT:
-                print("【" + username + "--->open打开重试超时，超过重试次数】")
-                return 500
+            print("#############################【" + username + "open元素失败】######################")
             driver.refresh()
     dmTime = time.time()
     while True:
@@ -124,75 +108,16 @@ async def openContainerUrl_Header(user, headless):
             """
             driver.execute_script(js_code)
             # 执行 JavaScript 代码，禁用 monitor.js 日志打印
-
             await asyncio.sleep(2)
             execute_button = driver.find_element_by_xpath('//*[@id="run_int"]/button[4]')
-            execute_button.click()
             dmEndtime = time.time()
             dmduration = dmEndtime - dmTime
             print(
-                "#############################【" + username + "运行全部代码成功】######################" + f"时间统计：共花费 {dmduration:.2f} 秒")
-            await asyncio.sleep(2)
-            print("#############################【 " + username + "4】#【区分是否打开浏览器" + str(
-                headless) + "】#####################")
-            modal = WebDriverWait(driver, 3).until(
-                EC.visibility_of_element_located(
-                    (By.CLASS_NAME,
-                     'modal-content')
-                )
-            )
-            # 调整窗口大小
-            driver.set_window_size(800, 600)
-            # 点击“重启并运行所有代码块”按钮
-            restart_button = modal.find_element_by_css_selector('.btn-danger')
-            restart_button.click()
-            break
+                "#############################【" + username + "运行全部代码元素定位到】######################" + f"时间统计：共花费 {dmduration:.2f} 秒")
+            return 200
         except Exception as e:
-            print("#############################【" + username + "运行全部代码失败】######################")
-            try:
-                alert = driver.switch_to.alert
-                alert.dismiss()  # 关闭弹窗
-            except NoAlertPresentException:
-                pass  # 如果不存在alert，则跳过
-            retry_count += 1
-            if retry_count > MAX_RETRY_COUNT:
-                print("【" + username + "--->运行全部代码，超过重试次数】")
-                return 500
+            print("#############################【" + username + "运行全部代码元素定位到】######################")
             driver.refresh()
-    zxStartTime = time.time()
-    while True:
-        try:
-            # 获取整个屏幕元素
-            screen_element = driver.find_element_by_tag_name("body")
-            # 设置横向和纵向滑动距离
-            x_offset = 100
-            y_offset = 100
-            # 使用ActionChains类模拟鼠标滑动
-            action = ActionChains(driver)
-            action.move_to_element(screen_element).perform()
-            time.sleep(1)
-            action.click_and_hold().move_by_offset(x_offset, y_offset).release().perform()
-            # 等待一段时间再继续执行
-            time.sleep(2)
-            print("#############################【" + username + "】#【区分是否循环获取结果" + new_url + "】#####################")
-            target_elements = driver.find_elements_by_xpath(
-                '//div[contains(@class, "output_text") and @dir="auto"]/pre')
-            text_to_check = "time cost"
-            for element in target_elements:
-                if text_to_check in element.text:
-                    print(element.text)
-                    # 找到保存按钮元素并模拟点击
-                    save_btn = driver.find_element_by_xpath(
-                        "//div[@id='save-notbook']//button[@data-jupyter-action='jupyter-notebook:save-notebook']")
-                    save_btn.click()
-                    zxEndTime = time.time()
-                    zxduration = zxEndTime - zxStartTime
-                    print(f"执行代码时间统计：共花费 {zxduration:.2f} 秒")
-                    # await asyncio.sleep(1800)
-                    return 200
-            await asyncio.sleep(2)
-        except:
-            await asyncio.sleep(2)
 
 
 # 并发打开juypter内部页面
@@ -205,7 +130,7 @@ async def taskOpenJuypter():
     print("开始时间统计到:" + str(datetime.now()))
     # 创建500个并发任务
     # 随机选择用户并发访问
-    unheadless = 5
+    unheadless = 1
     for user in users:
         headless = True
         if unheadless > 0:

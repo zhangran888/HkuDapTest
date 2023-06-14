@@ -1,7 +1,6 @@
 # author: zhangran
-# createTime: 2023/6/6 13:33:54
-# describe: 测试Rstudio容器进入运行代码
-
+# createTime: 2023/6/7 14:58:08
+# describe: orange容器登录密码后，进入页面，保持页面活动
 
 import concurrent
 import time
@@ -24,7 +23,7 @@ dapurl = "http://dap.datacyber.com/dap-client/#/Signin"
 
 def get_all_users():
     users = []
-    with open(r'user_rs.txt', 'r') as f:
+    with open(r'user_oge.txt', 'r') as f:
         for line in f:
             username, password = line.strip().split(':')
             users.append((username, password))
@@ -93,7 +92,7 @@ async def openContainerUrl_Header(user, headless):
             openduration = openEndTime - openTime
             # 打印新页面的标题和地址
             print(
-                "标题" + driver.title + '地址' + open_url + "用户-->" + username + "到Rstudio时间--->" + f"时间统计：共花费 {openduration:.2f} 秒")
+                "标题" + driver.title + '地址' + open_url + "用户-->" + username + "到Orange时间--->" + f"时间统计：共花费 {openduration:.2f} 秒")
             break
         except Exception as e:
             print("#############################【" + username + "--->open元素失败】######################")
@@ -106,51 +105,20 @@ async def openContainerUrl_Header(user, headless):
     while True:
         try:
             await asyncio.sleep(2)
-            # 模拟键盘向下滚动操作
-            driver.find_element_by_tag_name('body').send_keys(Keys.PAGE_DOWN)
-            time.sleep(2)  # 等待页面加载
-            # 找到 "solution" 文件夹并单击
-            solution_folder = driver.find_element_by_xpath(
-                "//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='solution']")
-            solution_folder.click()
-            # 等待页面加载完成
-            time.sleep(2)
-            # 找到 "test.R" 文件并单击
-            test_file = driver.find_element_by_xpath("//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='test.R']")
-            ActionChains(driver).double_click(test_file).perform()
-            # 等待文件加载完成
-            time.sleep(2)
-            # --------------------------------未调试通过，无法选中代码进行执行----------------------------
-            # 定位要选中的元素
-            driver.find_element_by_id("rstudio_source_text_editor")
-            driver.find_element_by_css_selector(".ace_scroller")
-            driver.find_element_by_css_selector('.ace_content')
+            oragePass = driver.find_element_by_id("password_input")
+            # 输入orange密码
+            oragePass.send_keys("orange")
+            # 回车进入下个页面
+            oragePass.send_keys(Keys.ENTER)
 
-            element = driver.find_element_by_id("rstudio_source_text_editor")
-
-            # 使用 ActionChains 类模拟鼠标操作
-            actions = ActionChains(driver)
-            actions.move_to_element(element).click().perform()
-
-            # 点击代码编辑器元素并选中全部代码
-            try:
-                # 选中所有代码
-                element.send_keys(Keys.CONTROL, 'a')
-
-                # 执行代码
-                element.send_keys(Keys.CONTROL, 'Enter')
-
-                dmEndtime = time.time()
-                dmduration = dmEndtime - dmTime
-                print(
-                    "#############################【" + username + "选中运行全部代码成功】######################" + f"时间统计：共花费 {dmduration:.2f} 秒")
-                # --------------------------------未调试通过----------------------------
-                break
-            except Exception as e:
-                print("选中代码失败-->" + str(e))
+            dmEndtime = time.time()
+            dmduration = dmEndtime - dmTime
+            print(
+                "#############################【" + username + "进入内部orange】######################" + f"时间统计：共花费 {dmduration:.2f} 秒")
+            break
         except Exception as e:
             print("错误信息--->" + str(e))
-            print("#############################【" + username + "运行全部代码失败】######################")
+            print("#############################【" + username + "进入内部orange失败】######################")
             try:
                 alert = driver.switch_to.alert
                 alert.dismiss()  # 关闭弹窗
@@ -158,10 +126,11 @@ async def openContainerUrl_Header(user, headless):
                 pass  # 如果不存在alert，则跳过
             retry_count += 1
             if retry_count > MAX_RETRY_COUNT:
-                print("【" + username + "--->运行全部代码，超过重试次数】")
+                print("【" + username + "--->进入内部orange，超过重试次数】")
                 return 500
             time.sleep(1)
             driver.refresh()
+
     zxStartTime = time.time()
     while True:
         try:
@@ -173,28 +142,22 @@ async def openContainerUrl_Header(user, headless):
             # 使用ActionChains类模拟鼠标滑动
             action = ActionChains(driver)
             action.move_to_element(screen_element).perform()
-            time.sleep(1)
+            await asyncio.sleep(1)
             action.click_and_hold().move_by_offset(x_offset, y_offset).release().perform()
             # 等待一段时间再继续执行
-            time.sleep(2)
-            print("#############################【" + username + "】#【区分是否循环获取结果】#####################")
-            # 找到输出区域元素
-            output_area = driver.find_element_by_xpath("//div[@class='ace_line' and contains(text(),'> ')][last()]")
-            # 获取输出内容
-            output_text = output_area.text
-            # 输出结果
-            print("打印的结果数据-->" + output_text)
+            await asyncio.sleep(10)
 
             zxEndTime = time.time()
             zxduration = zxEndTime - zxStartTime
-            print(f"执行代码时间统计：共花费 {zxduration:.2f} 秒")
+            print(
+                f"停留当前页面：共花费 {zxduration:.2f} 秒" + "#############################【" + username + "】#####################")
             return 200
         except:
             await asyncio.sleep(2)
 
 
 # 并发打开juypter内部页面
-async def taskRstudio():
+async def taskOrange():
     tasks = []
     success_count = 0
     users = get_all_users()
@@ -232,4 +195,4 @@ async def taskRstudio():
 
 
 if __name__ == '__main__':
-    asyncio.run(taskRstudio())
+    asyncio.run(taskOrange())

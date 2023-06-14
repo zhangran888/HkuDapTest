@@ -1,7 +1,7 @@
 # author: zhangran
-# createTime: 2023/6/6 13:33:54
-# describe: 测试Rstudio容器进入运行代码
-
+# createTime: 2023/6/14
+# describe: 统计ECS连接数，进入到juypter执行代码页面
+# 1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100
 
 import concurrent
 import time
@@ -9,22 +9,20 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from selenium.common.exceptions import NoAlertPresentException
-from selenium.webdriver import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import asyncio
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC, expected_conditions
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 
 executor = concurrent.futures.ThreadPoolExecutor()
-dapurl = "http://dap.datacyber.com/dap-client/#/Signin"
 
 
 def get_all_users():
     users = []
-    with open(r'user_rs.txt', 'r') as f:
+    with open(r'user_ws.txt', 'r') as f:
         for line in f:
             username, password = line.strip().split(':')
             users.append((username, password))
@@ -46,7 +44,7 @@ async def openContainerUrl_Header(user, headless):
     username, password = user
     print("#############################【 " + username + "6】######################")
     startTime = time.time()
-    driver.get(dapurl)
+    driver.get("http://120.26.166.101/dap-client/#/Signin")
     while True:
         try:
             await asyncio.sleep(2)
@@ -87,13 +85,24 @@ async def openContainerUrl_Header(user, headless):
             # 切换到新打开的窗口
             driver.switch_to.window(handles[-1])
             open_url = driver.current_url
-            driver.get(open_url)
 
+            await asyncio.sleep(2)
+            # 简单代码
+            # new_url = open_url.replace('/tree?', '') + '/notebooks/solution/easycode.ipynb'
+
+            # 根据获取的地址，拼接juypter中的文件信息 复杂代码
+            new_url = open_url.replace('/tree?', '') + '/notebooks/solution/titanic-project-example%20(1).ipynb'
+
+            # 在新的浏览器窗口中打开 URL
+            driver.execute_script("window.open('" + new_url + "');")
+            # 切换到新的窗口
+            handles = driver.window_handles
+            driver.switch_to.window(handles[-1])
             openEndTime = time.time()
             openduration = openEndTime - openTime
             # 打印新页面的标题和地址
             print(
-                "标题" + driver.title + '地址' + open_url + "用户-->" + username + "到Rstudio时间--->" + f"时间统计：共花费 {openduration:.2f} 秒")
+                "标题" + driver.title + "初始地址" + open_url + "裁剪后地址" + new_url + "用户-->" + username + "到juypter时间--->" + f"时间统计：共花费 {openduration:.2f} 秒")
             break
         except Exception as e:
             print("#############################【" + username + "--->open元素失败】######################")
@@ -105,51 +114,44 @@ async def openContainerUrl_Header(user, headless):
     dmTime = time.time()
     while True:
         try:
+            # 执行 JavaScript 代码，禁用 monitor.js 日志打印
+            js_code = """
+                console.log = (function() {
+                    var original_function = console.log;
+                    return function() {
+                        if (arguments.length > 0 && arguments[0].indexOf("monitor.js") !== -1) {
+                            return;
+                        }
+                        original_function.apply(null, arguments);
+                    };
+                })();
+            """
+            driver.execute_script(js_code)
+            # 执行 JavaScript 代码，禁用 monitor.js 日志打印
+
             await asyncio.sleep(2)
-            # 模拟键盘向下滚动操作
-            driver.find_element_by_tag_name('body').send_keys(Keys.PAGE_DOWN)
-            time.sleep(2)  # 等待页面加载
-            # 找到 "solution" 文件夹并单击
-            solution_folder = driver.find_element_by_xpath(
-                "//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='solution']")
-            solution_folder.click()
-            # 等待页面加载完成
-            time.sleep(2)
-            # 找到 "test.R" 文件并单击
-            test_file = driver.find_element_by_xpath("//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='test.R']")
-            ActionChains(driver).double_click(test_file).perform()
-            # 等待文件加载完成
-            time.sleep(2)
-            # --------------------------------未调试通过，无法选中代码进行执行----------------------------
-            # 定位要选中的元素
-            driver.find_element_by_id("rstudio_source_text_editor")
-            driver.find_element_by_css_selector(".ace_scroller")
-            driver.find_element_by_css_selector('.ace_content')
-
-            element = driver.find_element_by_id("rstudio_source_text_editor")
-
-            # 使用 ActionChains 类模拟鼠标操作
-            actions = ActionChains(driver)
-            actions.move_to_element(element).click().perform()
-
-            # 点击代码编辑器元素并选中全部代码
-            try:
-                # 选中所有代码
-                element.send_keys(Keys.CONTROL, 'a')
-
-                # 执行代码
-                element.send_keys(Keys.CONTROL, 'Enter')
-
-                dmEndtime = time.time()
-                dmduration = dmEndtime - dmTime
-                print(
-                    "#############################【" + username + "选中运行全部代码成功】######################" + f"时间统计：共花费 {dmduration:.2f} 秒")
-                # --------------------------------未调试通过----------------------------
-                break
-            except Exception as e:
-                print("选中代码失败-->" + str(e))
+            execute_button = driver.find_element_by_xpath('//*[@id="run_int"]/button[4]')
+            execute_button.click()
+            dmEndtime = time.time()
+            dmduration = dmEndtime - dmTime
+            print(
+                "#############################【" + username + "运行全部代码成功】######################" + f"时间统计：共花费 {dmduration:.2f} 秒")
+            await asyncio.sleep(2)
+            print("#############################【 " + username + "4】#【区分是否打开浏览器" + str(
+                headless) + "】#####################")
+            modal = WebDriverWait(driver, 3).until(
+                EC.visibility_of_element_located(
+                    (By.CLASS_NAME,
+                     'modal-content')
+                )
+            )
+            # 调整窗口大小
+            driver.set_window_size(800, 600)
+            # 点击“重启并运行所有代码块”按钮
+            restart_button = modal.find_element_by_css_selector('.btn-danger')
+            restart_button.click()
+            break
         except Exception as e:
-            print("错误信息--->" + str(e))
             print("#############################【" + username + "运行全部代码失败】######################")
             try:
                 alert = driver.switch_to.alert
@@ -160,7 +162,6 @@ async def openContainerUrl_Header(user, headless):
             if retry_count > MAX_RETRY_COUNT:
                 print("【" + username + "--->运行全部代码，超过重试次数】")
                 return 500
-            time.sleep(1)
             driver.refresh()
     zxStartTime = time.time()
     while True:
@@ -177,24 +178,29 @@ async def openContainerUrl_Header(user, headless):
             action.click_and_hold().move_by_offset(x_offset, y_offset).release().perform()
             # 等待一段时间再继续执行
             time.sleep(2)
-            print("#############################【" + username + "】#【区分是否循环获取结果】#####################")
-            # 找到输出区域元素
-            output_area = driver.find_element_by_xpath("//div[@class='ace_line' and contains(text(),'> ')][last()]")
-            # 获取输出内容
-            output_text = output_area.text
-            # 输出结果
-            print("打印的结果数据-->" + output_text)
-
-            zxEndTime = time.time()
-            zxduration = zxEndTime - zxStartTime
-            print(f"执行代码时间统计：共花费 {zxduration:.2f} 秒")
-            return 200
+            print("#############################【" + username + "】#【区分是否循环获取结果" + new_url + "】#####################")
+            target_elements = driver.find_elements_by_xpath(
+                '//div[contains(@class, "output_text") and @dir="auto"]/pre')
+            text_to_check = "time cost"
+            for element in target_elements:
+                if text_to_check in element.text:
+                    print(element.text)
+                    # 找到保存按钮元素并模拟点击
+                    save_btn = driver.find_element_by_xpath(
+                        "//div[@id='save-notbook']//button[@data-jupyter-action='jupyter-notebook:save-notebook']")
+                    save_btn.click()
+                    zxEndTime = time.time()
+                    zxduration = zxEndTime - zxStartTime
+                    print(f"执行代码时间统计：共花费 {zxduration:.2f} 秒")
+                    # await asyncio.sleep(300)
+                    return 200
+            await asyncio.sleep(2)
         except:
             await asyncio.sleep(2)
 
 
 # 并发打开juypter内部页面
-async def taskRstudio():
+async def taskOpenJuypter():
     tasks = []
     success_count = 0
     users = get_all_users()
@@ -203,7 +209,7 @@ async def taskRstudio():
     print("开始时间统计到:" + str(datetime.now()))
     # 创建500个并发任务
     # 随机选择用户并发访问
-    unheadless = 1
+    unheadless = 5
     for user in users:
         headless = True
         if unheadless > 0:
@@ -232,4 +238,4 @@ async def taskRstudio():
 
 
 if __name__ == '__main__':
-    asyncio.run(taskRstudio())
+    asyncio.run(taskOpenJuypter())

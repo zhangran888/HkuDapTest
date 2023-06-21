@@ -33,7 +33,7 @@ executor = concurrent.futures.ThreadPoolExecutor()
 # 登录并定义字典，存储不同用户的jwtToken数据
 def login():
     # 从 txt 文件中读取用户名和密码
-    with open(r'D:\PycharmProjects\HkuDapTest\user.txt', 'r') as f:
+    with open(r'D:\PycharmProjects\HkuDapTest\user_info.txt', 'r') as f:
         tasks = []
         for line in f:
             tasks.append(executor.submit(loginUser, line))
@@ -43,7 +43,7 @@ def login():
 def loginUser(line):
     username, password = line.strip().split(':')
     # 构造登录请求的参数
-    url = 'http://120.26.166.101/api/client/student/user/login'
+    url = 'http://47.99.202.72/api/client/student/user/login'
     headers = {"Content-Type": "application/json;charset=UTF-8"}
 
     data = {
@@ -66,7 +66,7 @@ def loginUser(line):
 
 # 根据不同用户的jwtToken数据获取对应的lab订单列表的第一笔数据
 def get_laborder_byuser_jwttoken(jwtToken):
-    url = "http://120.26.166.101/api/client/myLabs/listPage"
+    url = "http://47.99.202.72/api/client/myLabs/listPage"
     headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
     data = {
         "pageNo": 1,
@@ -126,7 +126,7 @@ def open_lab_executor(jwtToken, username):
     labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
     if labSubscriptionId:
         print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-        url = "http://120.26.166.101/api/client/myLabs/labStart"
+        url = "http://47.99.202.72/api/client/myLabs/labStart"
         data = {
             "labSubscriptionId": labSubscriptionId
         }
@@ -147,7 +147,7 @@ def close_lab(jwtToken, username):
     labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
     if labSubscriptionId:
         print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-        url = "http://120.26.166.101/api/client/myLabs/labStop"
+        url = "http://47.99.202.72/api/client/myLabs/labStop"
         data = {
             "labSubscriptionId": labSubscriptionId
         }

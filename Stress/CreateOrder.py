@@ -9,15 +9,15 @@ import random
 # 输入参数定义区域 #公司演示环境地址
 # API_ENDPOINT = "http://dap.datacyber.com/api/client/lab/subscription/add"
 # 压测地址
-API_ENDPOINT = "http://120.26.166.101/api/client/lab/subscription/add"
+API_ENDPOINT = "http://47.99.202.72/api/client/lab/subscription/add"
 # jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODM3OTMwNTQsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI5ZjNiYWJkYS1kNjllLTQ2MTgtOWVhNi0wZjJmNTdmZWVjNzQifQ.T4FZgUG1xlPArfAtyMs-9ngBwYam5x3B7bKEy3mhkPg"
-jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODUxNjQ0NTAsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiIyNDA4ZTVjNS1iNDg5LTRjZTUtOGVhMy0xZTQ3MWYyMGYwYTEifQ.ohM-vjzf2exsDGsa_EnDUwwO4k_PzBKJiaDZ8AQAuEw"
+jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODY4OTAzNjYsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI3YjcyYThhYS01ZTAwLTQxZWYtOWRhMi04ZTQyNWRjYWE2YTEifQ.l6_jLAYRKUgsHZ1zbjBvo9hl0rpX8lhZQ7WeIeLq-0g"
 headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
 
-TOTAL_ORDERS = 50
+TOTAL_ORDERS = 10
 STUDENT_TYPES = ["HKU"]
-labId = "1659122395938656257"
-labPriceId = "1659122501932912642"
+labId = "1669359171236106241"
+labPriceId = "1669562321818157058"
 
 
 # 循环创建订单

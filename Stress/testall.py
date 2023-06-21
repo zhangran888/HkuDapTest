@@ -155,4 +155,5 @@ if __name__ == '__main__':
     # time = time.time()
     # ss = time-starttime
     # print(f"开始时间统计到:{ss:.2f} " )
-    atestSign()
+    print(f"持续结束时间: {datetime.now()} ")
+    # atestSign()

@@ -32,7 +32,7 @@ def login():
         for line in f:
             username, password = line.strip().split(':')
             # 构造登录请求的参数
-            url = 'http://120.26.166.101/api/client/student/user/login'
+            url = 'http://47.99.202.72/api/client/student/user/login'
             headers = {"Content-Type": "application/json;charset=UTF-8"}
 
             data = {
@@ -55,7 +55,7 @@ def login():
 
 # 根据不同用户的jwtToken数据获取对应的lab订单列表的第一笔数据
 def get_laborder_byuser_jwttoken(jwtToken):
-    url = "http://120.26.166.101/api/client/myLabs/listPage"
+    url = "http://47.99.202.72/api/client/myLabs/listPage"
     headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
     data = {
         "pageNo": 1,
@@ -91,7 +91,7 @@ async def open_lab():
         labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
         if labSubscriptionId:
             print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-            url = "http://120.26.166.101/api/client/myLabs/labStart"
+            url = "http://47.99.202.72/api/client/myLabs/labStart"
             data = {
                 "labSubscriptionId": labSubscriptionId
             }
@@ -112,7 +112,7 @@ async def close_lab():
         labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
         if labSubscriptionId:
             print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-            url = "http://120.26.166.101/api/client/myLabs/labStop"
+            url = "http://47.99.202.72/api/client/myLabs/labStop"
             data = {
                 "labSubscriptionId": labSubscriptionId
             }
@@ -204,7 +204,7 @@ async def openContainerUrl_Noheader(user):
     options.headless = True
     driver = webdriver.Chrome(options=options, executable_path=chromepath)
     username, password = user
-    driver.get("http://120.26.166.101/dap-client/#/Signin")
+    driver.get("http://47.99.202.72/dap-client/#/Signin")
     time.sleep(1)
     username_email = driver.find_element_by_css_selector('input[placeholder="Email"]')
     username_email.send_keys(username)
@@ -310,7 +310,7 @@ async def openContainerUrl_Header(user):
     options = Options()
     driver = webdriver.Chrome(options=options, executable_path=chromepath)
     username, password = user
-    driver.get("http://120.26.166.101/dap-client/#/Signin")
+    driver.get("http://47.99.202.72/dap-client/#/Signin")
     time.sleep(1)
     username_email = driver.find_element_by_css_selector('input[placeholder="Email"]')
     username_email.send_keys(username)

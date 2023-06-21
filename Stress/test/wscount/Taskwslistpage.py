@@ -37,7 +37,7 @@ async def openContainerUrl_Header(user, headless):
     username, password = user
     print("#############################【 " + username + "6】######################")
     startTime = time.time()
-    driver.get("http://120.26.166.101/dap-client/#/Signin")
+    driver.get("http://47.99.202.72/dap-client/#/Signin")
     while True:
         try:
             await asyncio.sleep(2)
@@ -52,6 +52,7 @@ async def openContainerUrl_Header(user, headless):
             print(
                 "#############################【" + username + "登录成功】######################" + "登录耗时-->" + f"时间统计：共花费 {duration:.2f} 秒")
             await asyncio.sleep(300)
+            print(f"持续结束时间: {datetime.now()} ")
             return 200
         except Exception as e:
             print("#############################【" + username + "登录元素失败】######################")
@@ -72,7 +73,7 @@ async def taskOpenJuypter():
     print("开始时间统计到:" + str(datetime.now()))
     # 创建500个并发任务
     # 随机选择用户并发访问
-    unheadless = 5
+    unheadless = 1
     for user in users:
         headless = True
         if unheadless > 0:

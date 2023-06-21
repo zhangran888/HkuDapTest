@@ -35,7 +35,7 @@ async def openContainerUrl_Header(user, headless):
     retry_count = 0  # 当前重试次数
 
     # 这里是异步任务的具体实现
-    chromepath = r"D:\\chromedriver_32_113\\chromedriver.exe"
+    chromepath = r"D:\\chromedriver_32_114\\chromedriver.exe"
     options = Options()
     options.headless = headless
     options.add_argument("--incognito")
@@ -44,7 +44,7 @@ async def openContainerUrl_Header(user, headless):
     username, password = user
     print("#############################【 " + username + "6】######################")
     startTime = time.time()
-    driver.get("http://120.26.166.101/dap-client/#/Signin")
+    driver.get("http://47.99.202.72/dap-client/#/Signin")
     while True:
         try:
             await asyncio.sleep(2)
@@ -89,9 +89,11 @@ async def openContainerUrl_Header(user, headless):
             await asyncio.sleep(2)
             # 简单代码
             # new_url = open_url.replace('/tree?', '') + '/notebooks/solution/easycode.ipynb'
-
-            # 根据获取的地址，拼接juypter中的文件信息 复杂代码
-            new_url = open_url.replace('/tree?', '') + '/notebooks/solution/titanic-project-example%20(1).ipynb'
+            if '/tree?' in open_url:
+                # 根据获取的地址，拼接juypter中的文件信息 复杂代码
+                new_url = open_url.replace('/tree?', '') + '/notebooks/solution/titanic-project-example%20(1).ipynb'
+            else:
+                raise Exception("无法打开正确的页面，请在 Jupyter notebook 主界面中打开页面！")
 
             # 在新的浏览器窗口中打开 URL
             driver.execute_script("window.open('" + new_url + "');")
@@ -152,7 +154,10 @@ async def openContainerUrl_Header(user, headless):
             restart_button.click()
             break
         except Exception as e:
+            print(e)
             print("#############################【" + username + "运行全部代码失败】######################")
+            await asyncio.sleep(2)
+
             try:
                 alert = driver.switch_to.alert
                 alert.dismiss()  # 关闭弹窗
@@ -163,6 +168,12 @@ async def openContainerUrl_Header(user, headless):
                 print("【" + username + "--->运行全部代码，超过重试次数】")
                 return 500
             driver.refresh()
+
+            try:
+                alert = driver.switch_to.alert
+                alert.accept()
+            except NoAlertPresentException:
+                pass  # 如果不存在alert，则跳过
     zxStartTime = time.time()
     while True:
         try:
@@ -193,6 +204,7 @@ async def openContainerUrl_Header(user, headless):
                     zxduration = zxEndTime - zxStartTime
                     print(f"执行代码时间统计：共花费 {zxduration:.2f} 秒")
                     # await asyncio.sleep(300)
+                    print(f"持续结束时间: {datetime.now()} ")
                     return 200
             await asyncio.sleep(2)
         except:

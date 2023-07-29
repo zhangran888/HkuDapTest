@@ -43,7 +43,7 @@ def login():
 def loginUser(line):
     username, password = line.strip().split(':')
     # 构造登录请求的参数
-    url = 'http://47.99.202.72/api/client/student/user/login'
+    url = 'http://118.31.244.163/api/client/student/user/login'
     headers = {"Content-Type": "application/json;charset=UTF-8"}
 
     data = {
@@ -66,7 +66,7 @@ def loginUser(line):
 
 # 根据不同用户的jwtToken数据获取对应的lab订单列表的第一笔数据
 def get_laborder_byuser_jwttoken(jwtToken):
-    url = "http://47.99.202.72/api/client/myLabs/listPage"
+    url = "http://118.31.244.163/api/client/myLabs/listPage"
     headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
     data = {
         "pageNo": 1,
@@ -126,7 +126,7 @@ def open_lab_executor(jwtToken, username):
     labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
     if labSubscriptionId:
         print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-        url = "http://47.99.202.72/api/client/myLabs/labStart"
+        url = "http://118.31.244.163/api/client/myLabs/labStart"
         data = {
             "labSubscriptionId": labSubscriptionId
         }
@@ -147,7 +147,7 @@ def close_lab(jwtToken, username):
     labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
     if labSubscriptionId:
         print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-        url = "http://47.99.202.72/api/client/myLabs/labStop"
+        url = "http://118.31.244.163/api/client/myLabs/labStop"
         data = {
             "labSubscriptionId": labSubscriptionId
         }
@@ -175,14 +175,14 @@ def get_all_users():
 # open打开juypter容器地址
 def openContainerUrl_Header(user, headless):
     # 这里是异步任务的具体实现
-    chromepath = r"D:\\chromedriver_32_113\\chromedriver.exe"
+    chromepath = r"D:\\chromedriver_32_115\\chromedriver.exe"
     options = Options()
     options.headless = headless
     options.add_argument("--incognito")
     driver = webdriver.Chrome(options=options, executable_path=chromepath)
     username, password = user
     print("#############################【 " + username + "6】######################")
-    driver.get("http://120.26.166.101/dap-client/#/Signin")
+    driver.get("http://118.31.244.163/dap-client/#/Signin")
     time.sleep(1)
     username_email = driver.find_element_by_css_selector('input[placeholder="Email"]')
     username_email.send_keys(username)

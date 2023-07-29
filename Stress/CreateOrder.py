@@ -9,9 +9,9 @@ import random
 # 输入参数定义区域 #公司演示环境地址
 # API_ENDPOINT = "http://dap.datacyber.com/api/client/lab/subscription/add"
 # 压测地址
-API_ENDPOINT = "http://47.99.202.72/api/client/lab/subscription/add"
+API_ENDPOINT = "http://118.31.244.163/api/client/lab/subscription/add"
 # jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODM3OTMwNTQsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI5ZjNiYWJkYS1kNjllLTQ2MTgtOWVhNi0wZjJmNTdmZWVjNzQifQ.T4FZgUG1xlPArfAtyMs-9ngBwYam5x3B7bKEy3mhkPg"
-jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODY4OTAzNjYsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI3YjcyYThhYS01ZTAwLTQxZWYtOWRhMi04ZTQyNWRjYWE2YTEifQ.l6_jLAYRKUgsHZ1zbjBvo9hl0rpX8lhZQ7WeIeLq-0g"
+jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2OTAyNTQ0MzUsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI3ZGQzODUwNS04NGZkLTRjYTItODIwNC0yOWYyOGQ2OTU2ODYifQ.Z2gX3oUTYVpKL8JEgxhQqcqdevKaFz7xRLIhJc19pFU"
 headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
 
 TOTAL_ORDERS = 10

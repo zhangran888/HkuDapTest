@@ -15,6 +15,7 @@ import requests
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 import asyncio
 import websockets
@@ -88,6 +89,7 @@ def get_laborder_byuser_jwttoken(jwtToken):
 async def open_lab():
     login()
     for username, jwtToken in global_token_dict.items():
+        # print("获取jwttone", jwtToken)
         labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
         if labSubscriptionId:
             print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
@@ -178,12 +180,12 @@ async def taskmain():
         tps = 0  # total_time为0，则tps为0
     else:
         tps = len(tasks) / total_time
-    qps = success_count / total_time
+    # qps = success_count / total_time
     print(f"总耗时: {total_time:.2f} s")
     print(f"总请求: {len(tasks)}")
     print(f"成功请求: {success_count}")
     print(f"TPS: {tps:.2f}")
-    print(f"QPS: {qps:.2f}")
+    # print(f"QPS: {qps:.2f}")
 
 
 def get_all_users():
@@ -202,29 +204,30 @@ async def openContainerUrl_Noheader(user):
     options = Options()
     # 设置无头浏览器，模拟访问接口
     options.headless = True
-    driver = webdriver.Chrome(options=options, executable_path=chromepath)
+    service = Service(chromepath)
+    driver = webdriver.Chrome(options=options, service=service)
     username, password = user
     driver.get("http://118.31.244.163/dap-client/#/Signin")
     time.sleep(1)
-    username_email = driver.find_element_by_css_selector('input[placeholder="Email"]')
+    username_email = driver.find_element(by=By.CSS_SELECTOR, value='input[placeholder="Email"]')
     username_email.send_keys(username)
-    password_email = driver.find_element_by_css_selector('input[placeholder="Password"]')
+    password_email = driver.find_element(by=By.CSS_SELECTOR, value='input[placeholder="Password"]')
     # driver.find_element(by=By.CSS_SELECTOR, value='input[placeholder="Password"]')
     password_email.send_keys(password)
-    loginbtn = driver.find_element_by_class_name("el-button--large")
+    loginbtn = driver.find_element(by=By.CLASS_NAME, value="el-button--large")
     loginbtn.click()
     time.sleep(1)
     max_try = 1
     # for i in range(max_try):
-        # try:
-    element_open = driver.find_element_by_xpath(
-        '//button[@class="el-button el-button--text el-button--large"]/span[text()="Open "]')
+    # try:
+    element_open = driver.find_element(by=By.XPATH, value=
+    '//button[@class="el-button el-button--text el-button--large"]/span[text()="Open "]')
     element_open.click()
-        # except StaleElementReferenceException:
-            # 捕捉StaleElementReferenceException并在控制台输出错误信息
-            # print('open不再位于当前页面中，正在进行第{}次尝试...'.format(i + 1))
-            # if i == max_try - 1:
-            #     print('open已达到最大尝试次数....')
+    # except StaleElementReferenceException:
+    # 捕捉StaleElementReferenceException并在控制台输出错误信息
+    # print('open不再位于当前页面中，正在进行第{}次尝试...'.format(i + 1))
+    # if i == max_try - 1:
+    #     print('open已达到最大尝试次数....')
     # else:
     #     print('open已经尝试{}次，但元素仍未找到！'.format(max_try))
     # 获取当前所有窗口的句柄
@@ -244,7 +247,7 @@ async def openContainerUrl_Noheader(user):
         try:
             # 停留一秒，用于获取到运行的功能xpath地址
             time.sleep(1)
-            execute_button = driver.find_element_by_xpath('//*[@id="run_int"]/button[4]')
+            execute_button = driver.find_element(by=By.XPATH, value='//*[@id="run_int"]/button[4]')
             execute_button.click()
             # time.sleep(3)
 
@@ -274,8 +277,8 @@ async def openContainerUrl_Noheader(user):
                     # print("元素定位失败，无法刷新页面！")
                     continue
             try:
-                target_element = driver.find_elements_by_xpath(
-                    '//div[contains(@class, "output_text") and @dir="auto"]')
+                target_element = driver.find_element(by=By.XPATH, value=
+                '//div[contains(@class, "output_text") and @dir="auto"]')
                 result = target_element.text
                 if result:
                     # print("代码执行完成，目标区域存在" + result)
@@ -308,29 +311,30 @@ async def openContainerUrl_Header(user):
     # 这里是异步任务的具体实现
     chromepath = r"D:\\chromedriver_32_113\\chromedriver.exe"
     options = Options()
-    driver = webdriver.Chrome(options=options, executable_path=chromepath)
+    service = Service(chromepath)
+    driver = webdriver.Chrome(options=options, service=service)
     username, password = user
     driver.get("http://118.31.244.163/dap-client/#/Signin")
     time.sleep(1)
-    username_email = driver.find_element_by_css_selector('input[placeholder="Email"]')
+    username_email = driver.find_element(by=By.CSS_SELECTOR, value='input[placeholder="Email"]')
     username_email.send_keys(username)
-    password_email = driver.find_element_by_css_selector('input[placeholder="Password"]')
+    password_email = driver.find_element(by=By.CSS_SELECTOR, value='input[placeholder="Password"]')
     # driver.find_element(by=By.CSS_SELECTOR, value='input[placeholder="Password"]')
     password_email.send_keys(password)
-    loginbtn = driver.find_element_by_class_name("el-button--large")
+    loginbtn = driver.find_element(by=By.CLASS_NAME, value="el-button--large")
     loginbtn.click()
     time.sleep(1)
     max_try = 1
     # for i in range(max_try):
     #     try:
-    element_open = driver.find_element_by_xpath(
-        '//button[@class="el-button el-button--text el-button--large"]/span[text()="Open "]')
+    element_open = driver.find_element(by=By.XPATH, value=
+    '//button[@class="el-button el-button--text el-button--large"]/span[text()="Open "]')
     element_open.click()
-        # except StaleElementReferenceException:
-        #     # 捕捉StaleElementReferenceException并在控制台输出错误信息
-        #     # print('open不再位于当前页面中，正在进行第{}次尝试...'.format(i + 1))
-        #     if i == max_try - 1:
-        #         print('open已达到最大尝试次数....')
+    # except StaleElementReferenceException:
+    #     # 捕捉StaleElementReferenceException并在控制台输出错误信息
+    #     # print('open不再位于当前页面中，正在进行第{}次尝试...'.format(i + 1))
+    #     if i == max_try - 1:
+    #         print('open已达到最大尝试次数....')
     # else:
     #     print('open已经尝试{}次，但元素仍未找到！'.format(max_try))
     # 获取当前所有窗口的句柄
@@ -350,7 +354,7 @@ async def openContainerUrl_Header(user):
     try:
         # 停留一秒，用于获取到运行的功能xpath地址
         time.sleep(1)
-        execute_button = driver.find_element_by_xpath('//*[@id="run_int"]/button[4]')
+        execute_button = driver.find_element(by=By.XPATH, value='//*[@id="run_int"]/button[4]')
         execute_button.click()
         # time.sleep(3)
 
@@ -379,9 +383,9 @@ async def openContainerUrl_Header(user):
             except:
                 # print("元素定位失败，无法刷新页面！")
                 print()
-        # try:
-            target_element = driver.find_elements_by_xpath(
-                '//div[contains(@class, "output_text") and @dir="auto"]')
+            # try:
+            target_element = driver.find_element(by=By.XPATH, value=
+            '//div[contains(@class, "output_text") and @dir="auto"]')
             result = target_element.text
             if result:
                 # print("代码执行完成，目标区域存在" + result)

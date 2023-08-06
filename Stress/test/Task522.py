@@ -38,6 +38,7 @@ async def openContainerUrl_Header(user, headless):
     options.headless = headless
     options.add_argument("--incognito")
     options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--ignore-ssl-errors=yes')  # 忽略证书错误
     driver = webdriver.Chrome(options=options, executable_path=chromepath)
     username, password = user
     print("#############################【 " + username + "6】######################")
@@ -88,6 +89,7 @@ async def openContainerUrl_Header(user, headless):
             if '/tree?' in open_url:
                 # 根据获取的地址，拼接juypter中的文件信息
                 new_url = open_url.replace('/tree?', '') + '/notebooks/solution/titanic-project-example%20(1).ipynb'
+                # new_url = open_url.replace('/tree?', '') + '/notebooks/solution/easycode.ipynb'
             else:
                 raise Exception("无法打开正确的页面，请在 Jupyter notebook 主界面中打开页面！")
             # driver.get(new_url)
@@ -174,6 +176,7 @@ async def openContainerUrl_Header(user, headless):
     zxStartTime = time.time()
     while True:
         try:
+            driver.implicitly_wait(1800)
             # 获取整个屏幕元素
             screen_element = driver.find_element_by_tag_name("body")
             # 设置横向和纵向滑动距离
@@ -199,11 +202,25 @@ async def openContainerUrl_Header(user, headless):
                     save_btn.click()
                     zxEndTime = time.time()
                     zxduration = zxEndTime - zxStartTime
-                    print(f"执行代码时间统计：共花费 {zxduration:.2f} 秒")
+                    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"执行代码时间统计：共花费 {zxduration:.2f} ，当前时间是{current_time}秒")
                     # await asyncio.sleep(1800)
                     return 200
             await asyncio.sleep(2)
-        except:
+        except Exception as e:
+            print("判断是否执行完成error：", e)
+            try:
+                alert = driver.switch_to.alert
+                alert.dismiss()  # 关闭弹窗
+            except NoAlertPresentException:
+                pass  # 如果不存在alert，则跳过
+
+            try:
+                alert = driver.switch_to.alert
+                alert.accept()
+            except NoAlertPresentException:
+                pass  # 如果不存在alert，则跳过
+
             await asyncio.sleep(2)
 
 
@@ -217,7 +234,7 @@ async def taskOpenJuypter():
     print("开始时间统计到:" + str(datetime.now()))
     # 创建500个并发任务
     # 随机选择用户并发访问
-    unheadless = 5
+    unheadless = 100
     for user in users:
         headless = True
         if unheadless > 0:

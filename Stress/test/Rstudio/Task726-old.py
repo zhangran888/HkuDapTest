@@ -118,9 +118,9 @@ async def openContainerUrl_Header(user, headless):
             # 等待页面加载完成
             time.sleep(2)
             # 找到 "test.R" 文件并单击
-            test_file = driver.find_element_by_xpath("//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='6_boosting_CCB_cohort2_stressTest.R']")
-            # test_file = driver.find_element_by_xpath(
-            #     "//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='stressTest.R']")
+            # test_file = driver.find_element_by_xpath("//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='6_boosting_CCB_cohort2_stressTest.R']")
+            test_file = driver.find_element_by_xpath(
+                "//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='stressTest.R']")
             # test_file = driver.find_element_by_xpath(
             #     "//div[@class='GEL-OVUBGI GEL-OVUBJQ' and @title='test.R']")
             if test_file:
@@ -145,11 +145,8 @@ async def openContainerUrl_Header(user, headless):
         except Exception as e:
             print("错误信息--->" + str(e))
             print("#############################【" + username + "运行全部代码失败】######################")
-            rstudio_files = driver.find_element_by_id("rstudio_workbench_tab_files")
-            if rstudio_files:
-                rstudio_files.click()
-            else:
-                driver.find_element_by_xpath("//div[@class='rstudio-HyperlinkLabel GEL-OVUBJQ']").click()
+            driver.find_element_by_id("rstudio_workbench_tab_files").click()
+
             try:
                 alert = driver.switch_to.alert
                 alert.dismiss()  # 关闭弹窗
@@ -191,23 +188,9 @@ async def openContainerUrl_Header(user, headless):
                     # await asyncio.sleep(300)
                     return 200
                 else:
-                    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    print(f"代码未完成或发生错误 ({current_time}): {output_text}")
+                    print("代码未完成或发生错误" + output_text)
                     break
         except:
-            print("判断是否执行完成error：", e)
-            try:
-                alert = driver.switch_to.alert
-                alert.dismiss()  # 关闭弹窗
-            except NoAlertPresentException:
-                pass  # 如果不存在alert，则跳过
-
-            try:
-                alert = driver.switch_to.alert
-                alert.accept()
-            except NoAlertPresentException:
-                pass  # 如果不存在alert，则跳过
-
             await asyncio.sleep(2)
 
 

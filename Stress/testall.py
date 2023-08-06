@@ -155,5 +155,8 @@ if __name__ == '__main__':
     # time = time.time()
     # ss = time-starttime
     # print(f"开始时间统计到:{ss:.2f} " )
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"持续结束时间: {datetime.now()} ")
+    output_text = '11111'
+    print(f"代码未完成或发生错误 ({current_time}): {output_text}")
     # atestSign()

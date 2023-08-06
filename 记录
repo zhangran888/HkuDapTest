@@ -1,1 +1,2 @@
 chrome驱动下载地址：https://sites.google.com/chromium.org/driver/
+升级selenium版本：pip install --upgrade selenium

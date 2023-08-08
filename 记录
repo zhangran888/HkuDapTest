@@ -1,2 +1,4 @@
 chrome驱动下载地址：https://sites.google.com/chromium.org/driver/
 升级selenium版本：pip install --upgrade selenium
+安装selenium版本：pip install selenium==4.1.2
+若无法直接进行下载，可将包直接导入（selenium）：pip install --no-index --find-links=C:\Users\b\Desktop\pip selenium

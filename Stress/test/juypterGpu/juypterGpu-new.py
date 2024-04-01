@@ -1,3 +1,8 @@
+# author: zhangran
+# createTime: 2023/8/6
+# describe: 登录500用户容器压测，并增加页面活跃元素，让页面处于活跃状态(云上客户端测试使用)
+# 多线程并发
+
 import multiprocessing
 import sys
 import time
@@ -13,8 +18,12 @@ driver_path = r"D:\\chromedriver_32_115\\chromedriver.exe"
 
 dapurl = "http://172.24.180.19/dap-client/#/Signin"
 
+
+# dapurl = "https://science-zr.datacyber.com/dap-client/#/Signin"
+
+
 def test_eight_components(prid, user, mylist):
-    time.sleep(prid * 1)
+    # time.sleep(prid * 1)
     serviceA = Service(executable_path=driver_path)
     optionsA = webdriver.ChromeOptions()
     optionsA.add_argument("--no-sandbox")

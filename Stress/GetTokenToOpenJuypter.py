@@ -5,18 +5,13 @@
 import asyncio
 import json
 import time
-from asyncio import as_completed
-from concurrent.futures import ThreadPoolExecutor
 
 import requests
-
+import websockets
+from selenium import webdriver
 # 定义一个字典，用于保存每个用户账户对应的 Token 值
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.chrome.options import Options
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-import asyncio
-import websockets
 
 global_token_dict = {}
 container_url_dict = {}
@@ -25,11 +20,11 @@ container_url_dict = {}
 # 登录并定义字典，存储不同用户的jwtToken数据
 def login():
     # 从 txt 文件中读取用户名和密码
-    with open(r'D:\PycharmProjects\HkuDapTest\user_info.txt', 'r') as f:
+    with open(r'D:\PycharmProjects\HkuDapTest\user_zero.txt', 'r') as f:
         for line in f:
             username, password = line.strip().split(':')
             # 构造登录请求的参数
-            url = 'http://120.26.166.101/api/client/student/user/login'
+            url = 'https://dap.acrc.hku.hk/api/client/student/user/login'
             headers = {"Content-Type": "application/json;charset=UTF-8"}
 
             data = {
@@ -52,7 +47,7 @@ def login():
 
 # 根据不同用户的jwtToken数据获取对应的lab订单列表的第一笔数据
 def get_laborder_byuser_jwttoken(jwtToken):
-    url = "http://120.26.166.101/api/client/myLabs/listPage"
+    url = "https://dap.acrc.hku.hk/api/client/myLabs/listPage"
     headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
     data = {
         "pageNo": 1,
@@ -88,7 +83,7 @@ async def open_lab():
         labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
         if labSubscriptionId:
             print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-            url = "http://120.26.166.101/api/client/myLabs/labStart"
+            url = "https://dap.acrc.hku.hk/api/client/myLabs/labStart"
             data = {
                 "labSubscriptionId": labSubscriptionId
             }
@@ -109,7 +104,7 @@ async def close_lab():
         labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
         if labSubscriptionId:
             print(f'用户 {username} 的第一个订单是：{labSubscriptionId}')
-            url = "http://120.26.166.101/api/client/myLabs/labStop"
+            url = "https://dap.acrc.hku.hk/api/client/myLabs/labStop"
             data = {
                 "labSubscriptionId": labSubscriptionId
             }
@@ -190,7 +185,7 @@ def getContainerUrl():
         labSubscriptionId = get_laborder_byuser_jwttoken(jwtToken)
         # print("获取容器地址的用户-" + jwtToken)
         # print(r"获取到的id数据为" + labSubscriptionId)
-        url = "http://120.26.166.101/api/client/myLabs/listPage"
+        url = "https://dap.acrc.hku.hk/api/client/myLabs/listPage"
         headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
         data = {
             "pageNo": 1,
@@ -411,12 +406,12 @@ async def websoketmain():
 
 
 if __name__ == '__main__':
-    # asyncio.run(taskmain())
+    asyncio.run(taskmain())
 
     # getContainerUrl()
     # asyncio.run(taskOpenJuypter())
 
     # 运行测试WebSocket连接
-    asyncio.run(websoketmain())
+    # asyncio.run(websoketmain())
 
     # asyncio.run(taskCloseLab())

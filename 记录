@@ -1,4 +1,14 @@
 chrome驱动下载地址：https://sites.google.com/chromium.org/driver/
+https://googlechromelabs.github.io/chrome-for-testing/#canary
 升级selenium版本：pip install --upgrade selenium
 安装selenium版本：pip install selenium==4.1.2
 若无法直接进行下载，可将包直接导入（selenium）：pip install --no-index --find-links=C:\Users\b\Desktop\pip selenium
+
+# CreateOrder创建订单，GetTokenToOpenJuypter获取数据，批量打开实验室、关闭实验室
+
+# 查看当前代码分支
+git branch
+# 查看当前git地址
+git remote -v
+# 查看最近一次git提交的详细记录（提交人、提交时间、提交信息）
+git log -1

@@ -9,15 +9,24 @@ import random
 # 输入参数定义区域 #公司演示环境地址
 # API_ENDPOINT = "http://dap.datacyber.com/api/client/lab/subscription/add"
 # 压测地址
-API_ENDPOINT = "http://118.31.244.163/api/client/lab/subscription/add"
+API_ENDPOINT = "http://8.218.121.253/api/client/lab/subscription/add"
 # jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2ODM3OTMwNTQsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiI5ZjNiYWJkYS1kNjllLTQ2MTgtOWVhNi0wZjJmNTdmZWVjNzQifQ.T4FZgUG1xlPArfAtyMs-9ngBwYam5x3B7bKEy3mhkPg"
-jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMi5jb20iLCJpYXQiOjE2OTEzODY1NDAsImFjY291bnQiOiJ0ZWFAMi5jb20iLCJqdGkiOiI4MzJhZGMyNi0wNzY5LTQ4ZGQtYjNkZS0wMmM4ZjY2NThiNzIifQ.sGduF04hdY8nRbo-iGLmB_E03VAnDRaFGNEzWAEGWpo"
+jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZWFAMS5jb20iLCJpYXQiOjE2OTMxOTI0NzYsImFjY291bnQiOiJ0ZWFAMS5jb20iLCJqdGkiOiJmNmY3OTk5OS1iOTQwLTQ0ZWYtYjA1Yy1jYWEyY2EzNWY4YmYifQ.xQkJpPlWrO9bea9OyPutRsyMM2ETwhphbN1va87ZXlo"
 headers = {"jwtToken": f"{jwtToken}", "Content-Type": "application/json;charset=UTF-8"}
 
 TOTAL_ORDERS = 50
 STUDENT_TYPES = ["HKU"]
-labId = "1669359171236106241"
-labPriceId = "1669562321818157058"
+# JupyterCPU下单（tea@1.com创建）
+# labId = "1669359171236106241"
+# labPriceId = "1669562321818157058"
+
+# Rstudio下单（tea@2.com创建）
+# labId = "1687030918634639361"
+# labPriceId = "1687031325054308354"
+
+# JupyterGPU（tea@2.com创建）
+labId = "1694252845543559170"
+labPriceId = "1694252980092637186"
 
 
 # 循环创建订单
@@ -33,7 +42,7 @@ for i in range(TOTAL_ORDERS):
             "phone": ""
         },
         "labId": labId,
-        "label": "testCode",
+        "label": "testRCode",
         "file_expire_date": "",
         "labPriceId": labPriceId,
         "payExtraHour": "0",

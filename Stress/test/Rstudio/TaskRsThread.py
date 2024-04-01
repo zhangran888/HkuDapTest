@@ -29,7 +29,7 @@ driver_path = r"D:\\chromedriver_32_115\\chromedriver.exe"
 
 def get_all_users():
     users = []
-    with open(r'user_rs.txt', 'r') as f:
+    with open(r'user_info.txt', 'r') as f:
         for line in f:
             username, password = line.strip().split(':')
             users.append((username, password))

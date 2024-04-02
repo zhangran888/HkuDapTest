@@ -28,9 +28,18 @@ def userLabOvew(driver):
 
     lab_overview = driver.find_element(by=By.XPATH, value=ConfigFile.lab_overview_xpath)
     lab_overview.click()
+    time.sleep(3)
+
+    trial_laboverview = driver.find_element(by=By.XPATH, value=ConfigFile.trial_laboverview_xpath)
+    trial_laboverview.click()
+    time.sleep(2)
+
+    trial_labuage_time = driver.find_element(by=By.XPATH, value=ConfigFile.trial_labuage_time_xpath)
+    trial_labuage_time.click()
     time.sleep(2)
 
 
+# 鼠标滑动定位
 def move_toelement(driver, xpath):
     operation_record = driver.find_element(by=By.XPATH, value=xpath)
     # 使用 ActionChains 类模拟鼠标动作，执行向下滚动操作

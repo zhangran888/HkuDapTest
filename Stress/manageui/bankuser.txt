@@ -1,0 +1,4 @@
+SuperManager:123456
+admin@1.com:123456
+testACRC:123456
+testIT:123456

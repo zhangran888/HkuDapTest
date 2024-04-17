@@ -1,18 +1,13 @@
 # author: zhangran
 # createTime: 2024/3/21 17:20:14
 # describe: DAP管理后台UI自动化
-import time
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 from Stress.manageui import ConfigFile
-from Stress.manageui.DataOverview import DataOview
-from Stress.manageui.LabManagement import CaseLab
-from Stress.manageui.OrderManagement import Order
-from Stress.manageui.ResourceMonitor import ResourceMoni
-from Stress.manageui.UserManagement import Administrators
+from Stress.manageui.MenuList import menuListByUser
 
 driver_path = ConfigFile.driver_path
 
@@ -53,63 +48,7 @@ def InManage():
     password = ConfigFile.pass_word
     loginIn(username, password)
 
-    # 超管-SuperAdmin
-    if username == "SuperManager" and password == "123456":
-        # Data Overview模块
-        DataOview.userLabOvew(driver)
-
-        # Resource Monitoring模块
-        ResourceMoni.MirrorDatasetSource(driver)
-
-        # Lab Management模块
-        CaseLab.CaseLab(driver)
-
-        # Order Management 模块
-        Order.TrialSubscition(driver)
-
-        # User Management模块
-        Administrators.AdminiCoustmer(driver)
-    # ACRC Administrators角色
-    elif username == "testACRC" and password == "123456":
-        # Resource Monitoring模块
-        ResourceMoni.MirrorDatasetSource(driver, username)
-
-        # Lab Management模块
-        CaseLab.CaseLab(driver, username)
-
-        # Order Management 模块
-        Order.TrialSubscition(driver, username)
-
-        # User Management模块
-        Administrators.AdminiCoustmer(driver, username)
-    # 系统管理员 - System Administrators
-    elif username == "admin@1.com" and password == "123456":
-        # Data Overview模块
-        DataOview.userLabOvew(driver)
-
-        # Resource Monitoring模块
-        ResourceMoni.MirrorDatasetSource(driver)
-
-        # Lab Management模块
-        CaseLab.CaseLab(driver)
-
-        # Order Management 模块
-        Order.TrialSubscition(driver)
-
-        # User Management模块
-        Administrators.AdminiCoustmer(driver)
-    #  IT Support角色
-    elif username == "testIT" and password == "123456":
-        # Resource Monitoring模块
-        ResourceMoni.MirrorDatasetSource(driver, username)
-
-        # Lab Management模块
-        CaseLab.CaseLab(driver, username)
-    else:
-        print("出现其他未知角色，请确认！")
-        driver.execute_script("alert('出现其他未知角色，请确认！');")
-        time.sleep(5)
-    driver.close()
+    menuListByUser(driver, username, password)
 
 
 if __name__ == '__main__':

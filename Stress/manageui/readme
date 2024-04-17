@@ -1,0 +1,4 @@
+1、ManagementBack.py 该方法是单独通过登录账号的形式进行UI自动化操作
+2、BackMultiUser.py 该方法是通过读写用户列表账号，挨个登录用户后，进行UI自动化操作
+-----------------ManagementBack、BackMultiUser根据不同场景执行自动化-------------------------
+3、MenuList.py 管理点击菜单

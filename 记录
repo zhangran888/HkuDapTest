@@ -10,5 +10,17 @@ https://googlechromelabs.github.io/chrome-for-testing/#canary
 git branch
 # 查看当前git地址
 git remote -v
+#移除当前的远程仓库
+git remote remove origin
+#添加新的远程仓库
+git remote add origin https://github.com/username/new-repo.git
+#确保所有更改都已提交
+git add .
+git commit -m "备注信息"
+#推送到新的远程仓库
+git push -u origin master
+
 # 查看最近一次git提交的详细记录（提交人、提交时间、提交信息）
 git log -1
+
+

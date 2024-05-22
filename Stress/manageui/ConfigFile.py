@@ -55,7 +55,7 @@ lab_management_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1
 case_list_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/div[1]/div[1]/div[1]/li[3]/ul[1]/li[1]"
 lab_list_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/div[1]/div[1]/div[1]/li[3]/ul[1]/li[2]"
 case_list_dataset_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[4]/div[2]/table[1]/tbody[1]/tr[1]/td[6]/div[1]/button[1]/span[1]"
-case_list_dataset_cancel_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[5]/div[1]/div[1]/div[3]/span[1]/button[2]/span[1]"
+case_list_dataset_cancel_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[6]/div[1]/div[1]/div[3]/span[1]/button[2]/span[1]"
 
 it_lab_management_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/div[1]/div[1]/div[1]/li[2]/div[1]/span[1]"
 it_case_list_xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/ul[1]/div[1]/div[1]/div[1]/li[2]/ul[1]/li[1]"
